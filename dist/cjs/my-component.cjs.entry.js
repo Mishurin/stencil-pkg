@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const core = require('./core-b232f648.js');
+const core = require('./core-35344054.js');
 
 function format(first, middle, last) {
     return ((first || '') +
