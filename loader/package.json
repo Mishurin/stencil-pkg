@@ -1,5 +1,5 @@
 {
-  "name": "temp-loader",
+  "name": "stencil-pkg-loader",
   "typings": "./index.d.ts",
   "module": "./index.mjs",
   "main": "./index.cjs.js",

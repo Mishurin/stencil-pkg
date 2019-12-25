@@ -1,6 +1,6 @@
 {
-  "name": "temp",
-  "version": "0.0.3",
+  "name": "stencil-pkg",
+  "version": "0.0.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,7 +9,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/temp/temp.js",
+  "unpkg": "dist/stencil-pkg/stencil-pkg.js",
   "files": [
     "dist/",
     "loader/"
@@ -25,9 +25,9 @@
   "devDependencies": {
     "@stencil/core": "^1.8.2"
   },
-  "license": "MIT",
   "engines": {
     "node": "12.4.0",
     "npm": "6.12.0"
-  }
+  },
+  "license": "MIT"
 }

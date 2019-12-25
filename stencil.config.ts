@@ -1,7 +1,7 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-  namespace: 'temp',
+  namespace: 'stencil-pkg',
   outputTargets: [
     {
       type: 'dist',

@@ -1,6 +1,6 @@
 'use strict';
 
-const core = require('./core-35344054.js');
+const core = require('./core-6e643ac4.js');
 
 core.patchBrowser().then(options => {
   core.globals();

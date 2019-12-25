@@ -1,4 +1,4 @@
-System.register(['./core-33a17ba5.system.js'], function () {
+System.register(['./core-c2d56fa4.system.js'], function () {
     'use strict';
     var patchBrowser, globals, bootstrapLazy;
     return {
