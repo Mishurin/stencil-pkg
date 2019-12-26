@@ -11,7 +11,13 @@
   </head>
   <body>
     <my-component first="A" middle="Simple" last="Component"></my-component>
-    <app-component></app-component>
     <button-component></button-component>
+    <button id="trigger">Call an app!</button>
+    <script>
+      document.getElementById("trigger").addEventListener("click", function() {
+        const appCmp = document.createElement("app-component");
+        document.body.appendChild(appCmp);
+      });
+    </script>
   </body>
 </html>
