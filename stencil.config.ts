@@ -20,5 +20,9 @@ export const config: Config = {
       serviceWorker: null // disable service workers
     }
   ],
-  plugins: [sass({})]
+  plugins: [
+    sass({
+      injectGlobalPaths: ["node_modules/bootstrap/scss/bootstrap.scss"]
+    })
+  ]
 };

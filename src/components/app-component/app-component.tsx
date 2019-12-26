@@ -10,6 +10,7 @@ export class AppComponent {
     return (
       <div class="alert alert-primary" role="alert">
         I am an app
+        <child-component></child-component>
       </div>
     );
   }

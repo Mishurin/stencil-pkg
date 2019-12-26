@@ -1,0 +1,1 @@
+import{r as t,h as r}from"./p-2d319c56.js";const e=class{constructor(r){t(this,r)}render(){return r("div",{class:"alert alert-light",role:"alert"},"A simple light alert—check it out!")}static get style(){return""}};export{e as child_component};

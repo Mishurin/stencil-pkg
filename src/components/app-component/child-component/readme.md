@@ -1,4 +1,4 @@
-# button-component
+# app-component
 
 
 
@@ -7,16 +7,15 @@
 
 ## Dependencies
 
-### Depends on
+### Used by
 
-- [app-component](../app-component)
+ - [app-component](..)
 
 ### Graph
 ```mermaid
 graph TD;
-  button-component --> app-component
   app-component --> child-component
-  style button-component fill:#f9f,stroke:#333,stroke-width:4px
+  style child-component fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

@@ -1,1 +1,1 @@
-import{p as o,b as p}from"./p-2d319c56.js";o().then(o=>p([["p-5e1gpyoo",[[1,"app-component"]]],["p-i3u2dw36",[[1,"button-component"],[1,"my-component",{first:[1],middle:[1],last:[1]}]]]],o));
+import{p as o,b as p}from"./p-2d319c56.js";o().then(o=>p([["p-041zk0eb",[[0,"child-component"]]],["p-hotxfg19",[[1,"app-component"]]],["p-i3u2dw36",[[1,"button-component"],[1,"my-component",{first:[1],middle:[1],last:[1]}]]]],o));

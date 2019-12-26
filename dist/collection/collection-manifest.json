@@ -1,7 +1,8 @@
 {
   "entries": [
-    "components/button-component/button-component.js",
     "components/app-component/app-component.js",
+    "components/app-component/child-component/child-component.js",
+    "components/button-component/button-component.js",
     "components/my-component/my-component.js"
   ],
   "compiler": {
