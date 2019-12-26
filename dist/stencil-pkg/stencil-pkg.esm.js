@@ -1,1 +1,1 @@
-import{p as m,b as p}from"./p-c43588d7.js";m().then(m=>p([["p-ezl5xycr",[[1,"my-component",{first:[1],middle:[1],last:[1]}]]]],m));
+import{p,b as o}from"./p-c43588d7.js";p().then(p=>o([["p-bxrrxlfy",[[1,"app-component"]]],["p-8bl8qkfk",[[1,"button-component"]]],["p-ezl5xycr",[[1,"my-component",{first:[1],middle:[1],last:[1]}]]]],p));
