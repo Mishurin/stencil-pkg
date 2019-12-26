@@ -1,17 +1,21 @@
-import { Config } from '@stencil/core';
+import { Config } from "@stencil/core";
 
 export const config: Config = {
-  namespace: 'stencil-pkg',
+  namespace: "stencil-pkg",
+  bundles: [
+    { components: ["my-component", "button-component"] },
+    { components: ["app-component"] }
+  ],
   outputTargets: [
     {
-      type: 'dist',
-      esmLoaderPath: '../loader'
+      type: "dist",
+      esmLoaderPath: "../loader"
     },
     {
-      type: 'docs-readme'
+      type: "docs-readme"
     },
     {
-      type: 'www',
+      type: "www",
       serviceWorker: null // disable service workers
     }
   ]

@@ -1,4 +1,14 @@
-import { r as registerInstance, h } from './core-2c1eaee6.js';
+import { r as registerInstance, h } from './core-743b0916.js';
+
+const ButtonComponent = class {
+    constructor(hostRef) {
+        registerInstance(this, hostRef);
+    }
+    render() {
+        return h("button", null, "I am a button component");
+    }
+    static get style() { return "button{background-color:green}"; }
+};
 
 function format(first, middle, last) {
     return ((first || '') +
@@ -19,4 +29,4 @@ const MyComponent = class {
     static get style() { return ""; }
 };
 
-export { MyComponent as my_component };
+export { ButtonComponent as button_component, MyComponent as my_component };

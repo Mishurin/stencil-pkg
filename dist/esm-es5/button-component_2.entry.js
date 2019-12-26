@@ -1,4 +1,18 @@
-import { r as registerInstance, h } from './core-2c1eaee6.js';
+import { r as registerInstance, h } from './core-743b0916.js';
+var ButtonComponent = /** @class */ (function () {
+    function ButtonComponent(hostRef) {
+        registerInstance(this, hostRef);
+    }
+    ButtonComponent.prototype.render = function () {
+        return h("button", null, "I am a button component");
+    };
+    Object.defineProperty(ButtonComponent, "style", {
+        get: function () { return "button{background-color:green}"; },
+        enumerable: true,
+        configurable: true
+    });
+    return ButtonComponent;
+}());
 function format(first, middle, last) {
     return ((first || '') +
         (middle ? " " + middle : '') +
@@ -21,4 +35,4 @@ var MyComponent = /** @class */ (function () {
     });
     return MyComponent;
 }());
-export { MyComponent as my_component };
+export { ButtonComponent as button_component, MyComponent as my_component };

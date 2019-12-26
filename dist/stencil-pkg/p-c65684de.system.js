@@ -1,0 +1,1 @@
+System.register(["./p-8346dcce.system.js"],(function(){"use strict";var t,e;return{setters:[function(n){t=n.p;e=n.b}],execute:function(){t().then((function(t){return e([["p-zaiunekj.system",[[1,"button-component"],[1,"my-component",{first:[1],middle:[1],last:[1]}]]],["p-sd52sx9r.system",[[1,"app-component"]]]],t)}))}}}));

@@ -1,1 +1,0 @@
-import{r as t,h as r}from"./p-c43588d7.js";const n=class{constructor(r){t(this,r)}render(){return r("div",null,"I am an app")}static get style(){return":host{background-color:#90ee90}"}};export{n as app_component};

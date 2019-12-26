@@ -1,5 +1,5 @@
-import { p as patchBrowser, b as bootstrapLazy } from './core-2c1eaee6.js';
+import { p as patchBrowser, b as bootstrapLazy } from './core-743b0916.js';
 
 patchBrowser().then(options => {
-  return bootstrapLazy([["app-component",[[1,"app-component"]]],["button-component",[[1,"button-component"]]],["my-component",[[1,"my-component",{"first":[1],"middle":[1],"last":[1]}]]]], options);
+  return bootstrapLazy([["button-component_2",[[1,"button-component"],[1,"my-component",{"first":[1],"middle":[1],"last":[1]}]]],["app-component",[[1,"app-component"]]]], options);
 });

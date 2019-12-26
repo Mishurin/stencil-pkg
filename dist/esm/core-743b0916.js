@@ -1,30 +1,10 @@
-'use strict';
-
-function _interopNamespace(e) {
-  if (e && e.__esModule) { return e; } else {
-    var n = {};
-    if (e) {
-      Object.keys(e).forEach(function (k) {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () {
-            return e[k];
-          }
-        });
-      });
-    }
-    n['default'] = e;
-    return n;
-  }
-}
-
 const NAMESPACE = 'stencil-pkg';
 
 let queueCongestion = 0;
 let queuePending = false;
 let scopeId;
 let hostTagName;
+let isSvgMode = false;
 const win = typeof window !== 'undefined' ? window : {};
 const doc = win.document || { head: {} };
 const plt = {
@@ -60,6 +40,7 @@ const registerHost = (elm) => {
     }
     return hostRefs.set(elm, hostRef);
 };
+const isMemberInElement = (elm, memberName) => memberName in elm;
 const consoleError = (e) => console.error(e);
 const moduleCache = /*@__PURE__*/ new Map();
 const loadModule = (cmpMeta, hostRef, hmrVersionId) => {
@@ -70,11 +51,11 @@ const loadModule = (cmpMeta, hostRef, hmrVersionId) => {
     if (module) {
         return module[exportName];
     }
-    return new Promise(function (resolve) { resolve(_interopNamespace(require(
+    return import(
     /* webpackInclude: /\.entry\.js$/ */
     /* webpackExclude: /\.system\.entry\.js$/ */
     /* webpackMode: "lazy" */
-    `./${bundleId}.entry.js${ ''}`))); }).then(importedModule => {
+    `./${bundleId}.entry.js${ ''}`).then(importedModule => {
         {
             moduleCache.set(bundleId, importedModule);
         }
@@ -153,6 +134,14 @@ const flush = () => {
 };
 const nextTick = /*@__PURE__*/ (cb) => Promise.resolve().then(cb);
 const writeTask = /*@__PURE__*/ queueTask(queueDomWrites, true);
+/**
+ * Default style mode id
+ */
+/**
+ * Reusable empty obj/array
+ * Don't add values to these!!
+ */
+const EMPTY_OBJ = {};
 const isDef = (v) => v != null;
 const isComplexType = (o) => {
     // https://jsperf.com/typeof-fn-object/5
@@ -166,7 +155,7 @@ const patchEsm = () => {
     // @ts-ignore
     if ( !(win.CSS && win.CSS.supports && win.CSS.supports('color', 'var(--c)'))) {
         // @ts-ignore
-        return new Promise(function (resolve) { resolve(require('./css-shim-978387b1-52a5db49.js')); }).then(() => {
+        return import('./css-shim-978387b1-1e75855f.js').then(() => {
             plt.$cssShim$ = win.__stencil_cssshim;
             if (plt.$cssShim$) {
                 return plt.$cssShim$.initShim();
@@ -180,7 +169,7 @@ const patchBrowser = async () => {
         plt.$cssShim$ = win.__stencil_cssshim;
     }
     // @ts-ignore
-    const importMeta = (typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('core-debf4271.js', document.baseURI).href));
+    const importMeta = "";
     const regex = new RegExp(`\/${NAMESPACE}(\\.esm)?\\.js($|\\?|#)`);
     const scriptElm = Array.from(doc.querySelectorAll('script')).find(s => (regex.test(s.src) ||
         s.getAttribute('data-stencil-namespace') === NAMESPACE));
@@ -193,7 +182,7 @@ const patchBrowser = async () => {
         patchDynamicImport(resourcesUrl.href);
         if (!window.customElements) {
             // @ts-ignore
-            await new Promise(function (resolve) { resolve(require('./dom-76cc7c7d-769a0dda.js')); });
+            await import('./dom-76cc7c7d-0a082895.js');
         }
         return Object.assign(Object.assign({}, opts), { resourcesUrl: resourcesUrl.href });
     }
@@ -371,6 +360,18 @@ const h = (nodeName, vnodeData, ...children) => {
         }
     };
     walk(children);
+    if (vnodeData) {
+        {
+            const classData = vnodeData.className || vnodeData.class;
+            if (classData) {
+                vnodeData.class = typeof classData !== 'object'
+                    ? classData
+                    : Object.keys(classData)
+                        .filter(k => classData[k])
+                        .join(' ');
+            }
+        }
+    }
     const vnode = newVNode(nodeName, null);
     vnode.$attrs$ = vnodeData;
     if (vNodeChildren.length > 0) {
@@ -386,10 +387,91 @@ const newVNode = (tag, text) => {
         $elm$: null,
         $children$: null
     };
+    {
+        vnode.$attrs$ = null;
+    }
     return vnode;
 };
 const Host = {};
 const isHost = (node) => node && node.$tag$ === Host;
+/**
+ * Production setAccessor() function based on Preact by
+ * Jason Miller (@developit)
+ * Licensed under the MIT License
+ * https://github.com/developit/preact/blob/master/LICENSE
+ *
+ * Modified for Stencil's compiler and vdom
+ */
+const setAccessor = (elm, memberName, oldValue, newValue, isSvg, flags) => {
+    if (oldValue === newValue) {
+        return;
+    }
+    let isProp = isMemberInElement(elm, memberName);
+    let ln = memberName.toLowerCase();
+    if ( memberName === 'class') {
+        const classList = elm.classList;
+        const oldClasses = parseClassList(oldValue);
+        const newClasses = parseClassList(newValue);
+        classList.remove(...oldClasses.filter(c => c && !newClasses.includes(c)));
+        classList.add(...newClasses.filter(c => c && !oldClasses.includes(c)));
+    }
+    else {
+        // Set property if it exists and it's not a SVG
+        const isComplex = isComplexType(newValue);
+        if ((isProp || (isComplex && newValue !== null)) && !isSvg) {
+            try {
+                if (!elm.tagName.includes('-')) {
+                    let n = newValue == null ? '' : newValue;
+                    // Workaround for Safari, moving the <input> caret when re-assigning the same valued
+                    if (memberName === 'list') {
+                        isProp = false;
+                        // tslint:disable-next-line: triple-equals
+                    }
+                    else if (oldValue == null || elm[memberName] != n) {
+                        elm[memberName] = n;
+                    }
+                }
+                else {
+                    elm[memberName] = newValue;
+                }
+            }
+            catch (e) { }
+        }
+        if (newValue == null || newValue === false) {
+            {
+                elm.removeAttribute(memberName);
+            }
+        }
+        else if ((!isProp || (flags & 4 /* isHost */) || isSvg) && !isComplex) {
+            newValue = newValue === true ? '' : newValue;
+            {
+                elm.setAttribute(memberName, newValue);
+            }
+        }
+    }
+};
+const parseClassListRegex = /\s/;
+const parseClassList = (value) => (!value) ? [] : value.split(parseClassListRegex);
+const updateElement = (oldVnode, newVnode, isSvgMode, memberName) => {
+    // if the element passed in is a shadow root, which is a document fragment
+    // then we want to be adding attrs/props to the shadow root's "host" element
+    // if it's not a shadow root, then we add attrs/props to the same element
+    const elm = (newVnode.$elm$.nodeType === 11 /* DocumentFragment */ && newVnode.$elm$.host) ? newVnode.$elm$.host : newVnode.$elm$;
+    const oldVnodeAttrs = (oldVnode && oldVnode.$attrs$) || EMPTY_OBJ;
+    const newVnodeAttrs = newVnode.$attrs$ || EMPTY_OBJ;
+    {
+        // remove attributes no longer present on the vnode by setting them to undefined
+        for (memberName in oldVnodeAttrs) {
+            if (!(memberName in newVnodeAttrs)) {
+                setAccessor(elm, memberName, oldVnodeAttrs[memberName], undefined, isSvgMode, newVnode.$flags$);
+            }
+        }
+    }
+    // add new & update changed attributes
+    for (memberName in newVnodeAttrs) {
+        setAccessor(elm, memberName, oldVnodeAttrs[memberName], newVnodeAttrs[memberName], isSvgMode, newVnode.$flags$);
+    }
+};
 const createElm = (oldParentVNode, newParentVNode, childIndex, parentElm) => {
     // tslint:disable-next-line: prefer-const
     let newVNode = newParentVNode.$children$[childIndex];
@@ -403,6 +485,10 @@ const createElm = (oldParentVNode, newParentVNode, childIndex, parentElm) => {
     else {
         // create element
         elm = newVNode.$elm$ = ( doc.createElement( newVNode.$tag$));
+        // add css classes, attrs, props, listeners, etc.
+        {
+            updateElement(null, newVNode, isSvgMode);
+        }
         if ( isDef(scopeId) && elm['s-si'] !== scopeId) {
             // if there is a scopeId and this is the initial render
             // then let's add the scopeId as a css class
@@ -526,6 +612,15 @@ const patch = (oldVNode, newVNode) => {
     const oldChildren = oldVNode.$children$;
     const newChildren = newVNode.$children$;
     if ( newVNode.$text$ === null) {
+        // element node
+        {
+            {
+                // either this is the first render of an element OR it's an update
+                // AND we already know it's possible it could have changed
+                // this updates the element's css classes, attrs, props, listeners, etc.
+                updateElement(oldVNode, newVNode, isSvgMode);
+            }
+        }
         if ( oldChildren !== null && newChildren !== null) {
             // looks like there's child vnodes for both the old and new vnodes
             updateChildren(elm, oldChildren, newVNode, newChildren);
@@ -829,7 +924,7 @@ const initializeComponent = async (elm, hostRef, cmpMeta, hmrVersionId, Cstr) =>
             // this component has styles but we haven't registered them yet
             let style = Cstr.style;
             if ( cmpMeta.$flags$ & 8 /* needsShadowDomShim */) {
-                style = await new Promise(function (resolve) { resolve(require('./shadow-css-4889ae62-03827a39.js')); }).then(m => m.scopeCss(style, scopeId, false));
+                style = await import('./shadow-css-4889ae62-23996f3f.js').then(m => m.scopeCss(style, scopeId, false));
             }
             registerStyle(scopeId, style, !!(cmpMeta.$flags$ & 1 /* shadowDomEncapsulation */));
             endRegisterStyles();
@@ -1003,8 +1098,4 @@ const bootstrapLazy = (lazyBundles, options = {}) => {
     endBootstrap();
 };
 
-exports.bootstrapLazy = bootstrapLazy;
-exports.h = h;
-exports.patchBrowser = patchBrowser;
-exports.patchEsm = patchEsm;
-exports.registerInstance = registerInstance;
+export { patchEsm as a, bootstrapLazy as b, h, patchBrowser as p, registerInstance as r };
