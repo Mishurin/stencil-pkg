@@ -1,6 +1,1 @@
-import { p as patchBrowser, g as globals, b as bootstrapLazy } from './core-7a52b250.js';
-
-patchBrowser().then(options => {
-  globals();
-  return bootstrapLazy([["my-component",[[1,"my-component",{"first":[1],"middle":[1],"last":[1]}]]]], options);
-});
+import{p as m,b as p}from"./p-c43588d7.js";m().then(m=>p([["p-ezl5xycr",[[1,"my-component",{first:[1],middle:[1],last:[1]}]]]],m));

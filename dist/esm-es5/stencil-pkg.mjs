@@ -1,5 +1,4 @@
-import { p as patchBrowser, g as globals, b as bootstrapLazy } from './core-e454fbd9.js';
+import { p as patchBrowser, b as bootstrapLazy } from './core-2c1eaee6.js';
 patchBrowser().then(function (options) {
-    globals();
     return bootstrapLazy([["my-component", [[1, "my-component", { "first": [1], "middle": [1], "last": [1] }]]]], options);
 });
