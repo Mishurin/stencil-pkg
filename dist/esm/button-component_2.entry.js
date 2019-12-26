@@ -1,11 +1,15 @@
-import { r as registerInstance, h } from './core-743b0916.js';
+import { r as registerInstance, h } from './core-66a77161.js';
 
 const ButtonComponent = class {
     constructor(hostRef) {
         registerInstance(this, hostRef);
     }
     render() {
-        return h("button", null, "I am a button component");
+        return (h("button", { onClick: () => this.handleBtnClick() }, "I am a button component"));
+    }
+    handleBtnClick() {
+        const appCmp = document.createElement("app-component");
+        document.body.appendChild(appCmp);
     }
     static get style() { return "button{background-color:green}"; }
 };

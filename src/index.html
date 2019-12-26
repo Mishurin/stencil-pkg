@@ -16,5 +16,14 @@
       first="Stencil"
       last="'Don't call me a framework' JS"
     ></my-component>
+    <my-component first="A" middle="Simple" last="Component"></my-component>
+    <button-component></button-component>
+    <button id="trigger">Call an app!</button>
+    <script>
+      document.getElementById("trigger").addEventListener("click", function() {
+        const appCmp = document.createElement("app-component");
+        document.body.appendChild(appCmp);
+      });
+    </script>
   </body>
 </html>

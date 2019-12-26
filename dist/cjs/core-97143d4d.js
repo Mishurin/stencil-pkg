@@ -190,7 +190,7 @@ const patchBrowser = async () => {
         plt.$cssShim$ = win.__stencil_cssshim;
     }
     // @ts-ignore
-    const importMeta = (typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('core-56aee79f.js', document.baseURI).href));
+    const importMeta = (typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('core-97143d4d.js', document.baseURI).href));
     const regex = new RegExp(`\/${NAMESPACE}(\\.esm)?\\.js($|\\?|#)`);
     const scriptElm = Array.from(doc.querySelectorAll('script')).find(s => (regex.test(s.src) ||
         s.getAttribute('data-stencil-namespace') === NAMESPACE));
@@ -435,6 +435,43 @@ const setAccessor = (elm, memberName, oldValue, newValue, isSvg, flags) => {
         const newClasses = parseClassList(newValue);
         classList.remove(...oldClasses.filter(c => c && !newClasses.includes(c)));
         classList.add(...newClasses.filter(c => c && !oldClasses.includes(c)));
+    }
+    else if ( !isProp && memberName[0] === 'o' && memberName[1] === 'n') {
+        // Event Handlers
+        // so if the member name starts with "on" and the 3rd characters is
+        // a capital letter, and it's not already a member on the element,
+        // then we're assuming it's an event listener
+        if (memberName[2] === '-') {
+            // on- prefixed events
+            // allows to be explicit about the dom event to listen without any magic
+            // under the hood:
+            // <my-cmp on-click> // listens for "click"
+            // <my-cmp on-Click> // listens for "Click"
+            // <my-cmp on-ionChange> // listens for "ionChange"
+            // <my-cmp on-EVENTS> // listens for "EVENTS"
+            memberName = memberName.slice(3);
+        }
+        else if (isMemberInElement(win, ln)) {
+            // standard event
+            // the JSX attribute could have been "onMouseOver" and the
+            // member name "onmouseover" is on the window's prototype
+            // so let's add the listener "mouseover", which is all lowercased
+            memberName = ln.slice(2);
+        }
+        else {
+            // custom event
+            // the JSX attribute could have been "onMyCustomEvent"
+            // so let's trim off the "on" prefix and lowercase the first character
+            // and add the listener "myCustomEvent"
+            // except for the first character, we keep the event name case
+            memberName = ln[2] + memberName.slice(3);
+        }
+        if (oldValue) {
+            plt.rel(elm, memberName, oldValue, false);
+        }
+        if (newValue) {
+            plt.ael(elm, memberName, newValue, false);
+        }
     }
     else {
         // Set property if it exists and it's not a SVG

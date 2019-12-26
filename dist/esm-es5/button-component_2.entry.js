@@ -1,10 +1,15 @@
-import { r as registerInstance, h } from './core-743b0916.js';
+import { r as registerInstance, h } from './core-66a77161.js';
 var ButtonComponent = /** @class */ (function () {
     function ButtonComponent(hostRef) {
         registerInstance(this, hostRef);
     }
     ButtonComponent.prototype.render = function () {
-        return h("button", null, "I am a button component");
+        var _this = this;
+        return (h("button", { onClick: function () { return _this.handleBtnClick(); } }, "I am a button component"));
+    };
+    ButtonComponent.prototype.handleBtnClick = function () {
+        var appCmp = document.createElement("app-component");
+        document.body.appendChild(appCmp);
     };
     Object.defineProperty(ButtonComponent, "style", {
         get: function () { return "button{background-color:green}"; },

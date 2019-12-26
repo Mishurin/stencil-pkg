@@ -1,0 +1,1 @@
+System.register(["./p-1e3a4c81.system.js"],(function(){"use strict";var t,e;return{setters:[function(n){t=n.p;e=n.b}],execute:function(){t().then((function(t){return e([["p-njyfirap.system",[[1,"app-component"]]],["p-5mdvw3se.system",[[1,"button-component"],[1,"my-component",{first:[1],middle:[1],last:[1]}]]]],t)}))}}}));
