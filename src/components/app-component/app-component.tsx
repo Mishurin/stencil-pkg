@@ -2,11 +2,15 @@ import { Component, h } from "@stencil/core";
 
 @Component({
   tag: "app-component",
-  styleUrl: "app-component.css",
+  styleUrl: "app-component.scss",
   shadow: true
 })
 export class AppComponent {
   render() {
-    return <div class="app-container">I am an app</div>;
+    return (
+      <div class="alert alert-primary" role="alert">
+        I am an app
+      </div>
+    );
   }
 }
