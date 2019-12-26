@@ -20,10 +20,12 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "serve": "static ."
   },
   "devDependencies": {
-    "@stencil/core": "^1.8.2"
+    "@stencil/core": "^1.8.2",
+    "node-static": "^0.7.11"
   },
   "engines": {
     "node": "12.4.0",
