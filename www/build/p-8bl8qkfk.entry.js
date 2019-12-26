@@ -1,0 +1,1 @@
+import{r as t,h as n}from"./p-c43588d7.js";const o=class{constructor(n){t(this,n)}render(){return n("button",null,"I am a button component")}static get style(){return":host{background-color:green}"}};export{o as button_component};
