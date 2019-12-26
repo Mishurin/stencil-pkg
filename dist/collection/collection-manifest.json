@@ -10,5 +10,17 @@
     "typescriptVersion": "3.7.2"
   },
   "collections": [],
-  "bundles": []
+  "bundles": [
+    {
+      "components": [
+        "app-component"
+      ]
+    },
+    {
+      "components": [
+        "button-component",
+        "my-component"
+      ]
+    }
+  ]
 }
